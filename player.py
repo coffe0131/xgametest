@@ -33,9 +33,7 @@ class kirby():
         self.ishalf = False
         self.rect = pygame.Rect((self.pos_x,self.pos_y),(self.size[0],self.size[1]))
         self.eat_item=''
-        self.heart = 2
-
-
+        self.heart = 3
 
     def walk(self, ground):
         if self.walkCount +1 >= 12:

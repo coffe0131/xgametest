@@ -1,6 +1,7 @@
 import pygame
 import player, map, enemy,attack,items,startmenu,random
 import boss
+from time import sleep
 import music
 padWidth = 1000
 padHeight = 500
@@ -37,10 +38,19 @@ class game:
         self.user.eat_item = 'f' #이미지 받아올때 이미지 이름이 f이다.
         self.item_eat +=1  #
         self.levelupcount = 10
-        time = 500
+        times = 500
+        i = 0
+        while i in range(100):
+            bosstext = self.font.render("BOSS STAGE",1,(50,50,50))
+            print(bosstext)
+            bosstext2 = self.font.render("YOU HAVE TO HEAT BOSS 3 TIMES",1,(50,50,50))
+            print(bosstext)
+            self.gamePad.blit(bosstext,(50,50))
+            self.gamePad.blit(bosstext2,(750,0))
+            i+=1
 
         while self.game_state:
-            if(time <= 0):
+            if(times <= 0):
                 return 0
                 print("TIME OUT")
             if(self.user.heart < 1):
@@ -62,10 +72,9 @@ class game:
             self.user.hit(self.bullets)
             self.bullets.update()
 
-            timeout = self.font.render("Time : %d"%(time),1,(50,50,50))
-            text = self.font.render("Score : %d"%(self.score),1,(50,50,50))
+            timeout = self.font.render("Time : %d"%(times),1,(50,50,50))
             text2 = self.font.render("Heart : %d"%(self.user.heart),1,(50,50,50))
-            time = time -1
+            times = times -1
             self.gamePad.blit(text2,(0,0))
             self.gamePad.blit(timeout,(750,0))
             self.bossM.update()    
@@ -126,8 +135,3 @@ class game:
                 self.f_s_acctack.x=self.user.pos_x + 37
                 self.f_s_acctack.y=self.user.pos_y + 30
                 self.attacks.append(self.f_s_acctack)
-
-if __name__ == "__main__":
-    st=game()
-    st.start()
-
