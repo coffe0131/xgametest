@@ -1,15 +1,15 @@
 import pygame
 #여기에 fire
-fire_attack=[pygame.image.load('images/fire_attack1.png'),
-             pygame.image.load('images/fire_attack2.png'),
-             pygame.image.load('images/fire_attack3.png')]
+fire_attack=[pygame.image.load('images/fire.png'),
+             pygame.image.load('images/fire.png'),
+             pygame.image.load('images/fire.png')]
 
 class Attack:
     def __init__(self,x,y):
         super(Attack, self).__init__()
         self.size = [4,4]
         self.height = 4
-        self.speed = 7
+        self.speed = 10
         self.x=x
         self.y=y
         self.image_type=[]

@@ -23,7 +23,7 @@ class kirby():
         print(self.image.get_rect())
         self.isJump = False
         self.pos_x = 50
-        self.pos_y = 400
+        self.pos_y = 370
         self.vel = 5
         self.left = False
         self.right = False
@@ -79,12 +79,14 @@ class kirby():
     def image_load(self, stat): 
         walkLeft = [pygame.image.load('images/'+self.eat_item+'l0'+str(i)+'.png') for i in range(1,6)]
         walkRight = [pygame.image.load('images/'+self.eat_item+'r0'+str(i)+'.png') for i in range(1,6)]
+        
         if stat == 0:
             self.image = walkLeft[self.walkCount%5]
         elif stat == 1:
             self.image = walkRight[self.walkCount%5]
         elif stat == 2:
             self.image = pygame.image.load('images/'+self.eat_item+'r01.png')
+        
 
 
     def collision(self,item_hitbox):

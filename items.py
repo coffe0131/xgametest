@@ -19,6 +19,5 @@ class ITEM():
 
     def draw(self, gamePad):
         self.hitbox = (self.pos_x, self.pos_y, self.size[0]+self.speed, self.size[1]+self.speed)
-        pygame.draw.rect(gamePad, (255, 0, 0), self.hitbox, 1) #사각형 테두리
         gamePad.blit(self.image, self.hitbox)
         #((self.pos_x, self.pos_y),(self.size[0],self.pos_y+self.size[1]))

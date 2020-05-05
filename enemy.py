@@ -23,7 +23,6 @@ class MONSTER():
 
     def draw(self, gamePad):
         self.hitbox = (self.pos_x, self.pos_y, self.size[0]+self.speed, self.size[1]+self.speed)
-        pygame.draw.rect(gamePad, (255, 0, 0), self.hitbox, 1) #사각형 테두리
         gamePad.blit(self.monsterimage[self.imagecount%4], self.hitbox)
         self.imagecount +=1
         #gamePad.blit(self.image,((self.pos_x, self.pos_y),(self.pos_x+self.size[0],self.pos_y+self.size[1])))

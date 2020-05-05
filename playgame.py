@@ -1,5 +1,6 @@
 import pygame
-import player, map, enemy,attack,items,startscreen,random
+import player, map, enemy,attack,items,startmenu,random
+import music
 padWidth = 1000
 padHeight = 500
 
@@ -27,7 +28,7 @@ class game:
     def itemmake(self):
         self.item = items.ITEM()
     def itemcall(self):
-        if self.item.pos_x <=0 and self.itempresent==1:
+        if self.item.pos_x <=400 and self.itempresent==1:
             self.itempresent=0 
         self.item.update()
         self.item.draw(self.gamePad)  #아이템 출력
@@ -44,7 +45,7 @@ class game:
         #mon = enemy.MONSTER()
         #item = items.ITEM()
         while self.game_state:
-            if(self.moncount > 50):
+            if(self.moncount > 30):
                 return 0
             if(self.heart < 1):
                 return 0
@@ -68,13 +69,21 @@ class game:
                 if(self.moncount <10):
                     self.mon = enemy.MONSTER(random.choice(self.monsterheight),10)   #몬스터가 화면에서 없어지면 새 몬스터 출발
                 if(10<=self.moncount<20):
-                    if(self.moncount%10 == 0 or self.moncount%10 == 1):
-                        self.mon = enemy.MONSTER((1000,200),20)   #몬스터가 화면에서 없어지면 새 몬스터 출발
+                    if(self.moncount==10):
+                        self.mon = enemy.MONSTER((1000,200),20)
+                    if(self.moncount==11):
+                        self.mon = enemy.MONSTER((1000,200),20)
+                    if(self.moncount==12):
+                        self.mon = enemy.MONSTER((1000,200),20)
                     else:
                         self.mon = enemy.MONSTER(random.choice(self.monsterheight),20)   #몬스터가 화면에서 없어지면 새 몬스터 출발
                 if(20<=self.moncount):
-                    if(self.moncount%10 == 0 or self.moncount%10 == 1):
-                        self.mon = enemy.MONSTER((1000,200),30)   #몬스터가 화면에서 없어지면 새 몬스터 출발
+                    if(self.moncount==20):
+                        self.mon = enemy.MONSTER((1000,200),30)
+                    if(self.moncount==21):
+                        self.mon = enemy.MONSTER((1000,200),30)
+                    if(self.moncount==23):
+                        self.mon = enemy.MONSTER((1000,200),20)
                     else:
                         self.mon = enemy.MONSTER(random.choice(self.monsterheight),30)   #몬스터가 화면에서 없어지면 새 몬스터 출발
                 self.moncount +=1
@@ -103,8 +112,6 @@ class game:
             self.item.update()
             self.item.draw(self.gamePad)
             
-        
-                
             if self.itemuse == 1:
                 if self.f_s_acctack.collision(self.mon.hitbox):  #불꽃이랑 몬스터랑 충돌했을때 돌아감.
                     self.mon.pos_x -= padWidth 
