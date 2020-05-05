@@ -4,6 +4,7 @@ from pygame.locals import*
 import keyboard
 import playgame
 import music
+import playboss
 
 music.mplay(0.3)
 pygame.init()
@@ -97,17 +98,18 @@ class StartMenu():
             if st_op_rect[0].collidepoint(pygame.mouse.get_pos()): ##start에 마우스가 올려져 있을 때
                 if event.type == MOUSEBUTTONDOWN:
                     g = playgame.game()
-                    g.start()
+                    #g.start()
                     if g.start():
                         self.gameruning = False
                         print("CLEAR")
                         g.game_state = True
-                        g.boss_start()
-                        # if g.boss_start():
-                            #self.clear()
-                            #print("CLEAR")
-                        # else:
-                            #self.restart()                
+                        boss=playboss.game()
+                        boss.start()
+                        if boss.start():
+                            self.clear()
+                            print("CLEAR")
+                        else:
+                            self.restart()                
                     else:
                         self.gameruning = False
                         print("GAME OVER")

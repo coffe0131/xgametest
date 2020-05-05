@@ -3,18 +3,21 @@ import player, map, enemy,attack,items,startmenu,random
 import music
 padWidth = 1000
 padHeight = 500
+#font = pygame.font.Font("font/Maplestory Bold.ttf", 50)
+
 
 class game:
     def __init__(self):
         self.gamePad = pygame.display.set_mode((padWidth,padHeight))
         pygame.display.set_caption('Kirby')
         #curby = pygame.image.load("images/fighter.png").convert_alpha()
+        self.font = pygame.font.Font("font/Maplestory Bold.ttf", 50)
         self.clock = pygame.time.Clock()
         self.user = player.kirby()
         self.ground = map.BACKGROUND()
         self.game_state=True
         self.attacks=[]
-        self.f_s_acctack=attack.Attack(self.user.pos_x+40,self.user.pos_y+20) #atteck class객체를 받아옴(x좌표,y좌표)
+        self.f_s_acctack=attack.Attack(self.user.pos_x+40,self.user.pos_y+20,10) #atteck class객체를 받아옴(x좌표,y좌표)
         self.item_eat=0 
         self.moncount = 1
         self.monsterheight = [(1000,400),(1000,200)]
@@ -24,11 +27,15 @@ class game:
         self.score = 0
         self.itempresent = 0
         self.item = items.ITEM()
-        
+        self.levelup = self.font.render("LEVELUP",1,(255,0,0))
+        self.levelupcount = 11
+    
+
+    
     def itemmake(self):
         self.item = items.ITEM()
     def itemcall(self):
-        if self.item.pos_x <=400 and self.itempresent==1:
+        if self.item.pos_x <=0 and self.itempresent==1:
             self.itempresent=0 
         self.item.update()
         self.item.draw(self.gamePad)  #아이템 출력
@@ -39,6 +46,7 @@ class game:
             self.f_s_acctack.attack_type(type=1) #fire스킬**로 설정해줌
             self.user.eat_item = 'f' #이미지 받아올때 이미지 이름이 f이다.
             self.item_eat +=1  #
+            self.levelupcount = 10
 
     def start(self):
         #crashed = False
@@ -59,6 +67,11 @@ class game:
             self.user.walk(self.ground) #유저 업데이트
             self.user.update() #유저 점프
             self.user.draw(self.gamePad) #화면에 유저모습 출력
+            text = self.font.render("Score : %d"%(self.score),1,(50,50,50))
+            text2 = self.font.render("Heart : %d"%(self.heart),1,(50,50,50))
+            self.gamePad.blit(text,(0,0))
+            self.gamePad.blit(text2,(750,0))
+
 
             if self.user.collision(self.mon.hitbox):  #커비랑 몬스터랑 충돌했을때 돌아감.
                 self.mon.pos_x -= padWidth  
@@ -111,6 +124,10 @@ class game:
 
             self.item.update()
             self.item.draw(self.gamePad)
+            if(0<self.levelupcount<11):
+                self.gamePad.blit(self.levelup,(450,0))
+                self.levelupcount -=1
+
             
             if self.itemuse == 1:
                 if self.f_s_acctack.collision(self.mon.hitbox):  #불꽃이랑 몬스터랑 충돌했을때 돌아감.

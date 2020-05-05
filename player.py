@@ -1,5 +1,6 @@
 import pygame
 import map
+import boss
 import attack
 import items
 char1_l=[pygame.image.load('images/l01.png'),
@@ -32,6 +33,7 @@ class kirby():
         self.ishalf = False
         self.rect = pygame.Rect((self.pos_x,self.pos_y),(self.size[0],self.size[1]))
         self.eat_item=''
+        self.heart = 2
 
 
 
@@ -93,5 +95,10 @@ class kirby():
         if self.rect.colliderect(item_hitbox):  #self를 둘러싼 사각형 이미지 박스 - 아이템이랑 부딪히면 true
                 return True
         return False
+
+    def hit(self, bullets):
+        hits = pygame.sprite.spritecollide(self,bullets,True)
+        if hits:
+            self.heart -= 1
 
 

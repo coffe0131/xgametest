@@ -5,11 +5,11 @@ fire_attack=[pygame.image.load('images/fire.png'),
              pygame.image.load('images/fire.png')]
 
 class Attack:
-    def __init__(self,x,y):
+    def __init__(self,x,y,speed):
         super(Attack, self).__init__()
         self.size = [4,4]
         self.height = 4
-        self.speed = 10
+        self.speed = speed
         self.x=x
         self.y=y
         self.image_type=[]
