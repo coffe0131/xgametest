@@ -20,6 +20,7 @@ class BOSS():
         self.shootdelay = 0
         self.bossdelay = 0
 
+
     def shoot(self, bullets):
         if self.shootdelay % 40 == 0:
 
