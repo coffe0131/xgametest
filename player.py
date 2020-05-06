@@ -21,7 +21,6 @@ class kirby():
         self.image = pygame.image.load('images/r01.png')
         self.size = (50,50)
         self.image = pygame.transform.scale(self.image,self.size)
-        print(self.image.get_rect())
         self.isJump = False
         self.pos_x = 50
         self.pos_y = 370
@@ -33,7 +32,9 @@ class kirby():
         self.ishalf = False
         self.rect = pygame.Rect((self.pos_x,self.pos_y),(self.size[0],self.size[1]))
         self.eat_item=''
-        self.heart = 3
+        self.heart = 2
+
+
 
     def walk(self, ground):
         if self.walkCount +1 >= 12:
