@@ -1,17 +1,15 @@
 import pygame
-import player, map, enemy,attack,items,startmenu,random
+import player, map, enemy,attack,items,random,music
 import music
 padWidth = 1000
 padHeight = 500
-#font = pygame.font.Font("font/Maplestory Bold.ttf", 50)
-
 
 class game:
     def __init__(self):
         self.gamePad = pygame.display.set_mode((padWidth,padHeight))
         pygame.display.set_caption('Kirby')
         #curby = pygame.image.load("images/fighter.png").convert_alpha()
-        self.font = pygame.font.Font("font/Maplestory Bold.ttf", 50)
+        self.font = pygame.font.Font("font/KirbyL.ttf", 50)
         self.clock = pygame.time.Clock()
         self.user = player.kirby()
         self.ground = map.BACKGROUND()
@@ -29,6 +27,7 @@ class game:
         self.item = items.ITEM()
         self.levelup = self.font.render("LEVELUP",1,(255,0,0))
         self.levelupcount = 11
+        self.sound=music.MUSIC()
     
 
     
@@ -52,6 +51,7 @@ class game:
         #crashed = False
         #mon = enemy.MONSTER()
         #item = items.ITEM()
+        self.sound.mplay(0)
         while self.game_state:
             if(self.moncount > 30):
                 return 0
@@ -100,7 +100,6 @@ class game:
                     else:
                         self.mon = enemy.MONSTER(random.choice(self.monsterheight),30)   #몬스터가 화면에서 없어지면 새 몬스터 출발
                 self.moncount +=1
-                print(self.moncount)
 
             self.mon.update()    #몬스터 상태 업데이트
             self.mon.draw(self.gamePad)  #화면에 몬스터 모습 출력
@@ -144,7 +143,7 @@ class game:
                     if i.x > padWidth: self.attacks.remove(i)           
             pygame.display.update()
             self.clock.tick(30)
-        if heart<1:
+        if self.heart<1:
             return 0
         else:
             return 1
@@ -174,6 +173,7 @@ class game:
                 if key_event[pygame.K_SPACE]:
                     self.user.isJump = True
                     self.user.walkCount = 0
+                    pygame.mixer.Sound.play(self.sound.jump)
                     
             if key_event[pygame.K_a]: #key a를 누르면 불꽃 나감
                 if self.item_eat != 0: #item을 먹으면 불꽃
@@ -182,5 +182,6 @@ class game:
                         self.f_s_acctack.x=self.user.pos_x + 37
                         self.f_s_acctack.y=self.user.pos_y + 30
                         self.attacks.append(self.f_s_acctack)
+                        pygame.mixer.Sound.play(self.sound.fire)
                 else: pass
 
