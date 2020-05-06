@@ -26,7 +26,6 @@ class MONSTER(pygame.sprite.Sprite):
         
 
     def draw(self, gamePad):
-        print(self.isbullet)
         if self.isbullet == True:
             gamePad.blit(self.image,self.rect)
         else:
