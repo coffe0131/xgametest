@@ -6,19 +6,18 @@ import playgame
 import music
 import playboss
 
-music.mplay(0.3)
 pygame.init()
 width,height = 500,500
 #start이미지, option 이미지, cursor 이미지
 image=[pygame.transform.scale(pygame.image.load("images/back.png"),(500,500)),
-       pygame.image.load("images/as.jpg"),
+       pygame.transform.scale(pygame.image.load("images/as.png"),(500,300)),
        pygame.image.load("images/cursor.png"),
-       pygame.transform.scale(pygame.image.load("images/gameover.png"),(1000,400)),
+       pygame.transform.scale(pygame.image.load("images/gameover.png"),(700,500)),
        pygame.image.load("images/w1.png"),
        pygame.image.load("images/clear.jpg")]
 
-font1 = pygame.font.Font("font/Maplestory Bold.ttf", 50)
-font2 = pygame.font.Font("font/Maplestory Light.ttf", 80)
+font1 = pygame.font.Font("font/KirbyL.ttf", 50)
+font2 = pygame.font.Font("font/KirbyS.ttf", 80)
 st_op_buttons=[font1.render("START", True, (0, 255, 0)),
                font1.render('OPTION', True,(0,255,0)),
                pygame.transform.scale(pygame.image.load("images/continue.png"),(200,80)),
@@ -40,10 +39,12 @@ class StartMenu():
         self.gameruning=True #화면 유지
         self.key_event = pygame.key.get_pressed()
         self.cursor=image[2]
+        self.musicc=music.MUSIC()
 
     def screens(self):
         pygame.display.set_caption('kerby')
         self.cursor.set_colorkey((0, 255, 0))
+        self.musicc.mplay(0)
         while self.gameruning:
             target = pygame.mouse.get_pos()
             if self.menu_state=="start":
@@ -57,13 +58,21 @@ class StartMenu():
             pygame.display.update()
         pygame.quit()
 
+    def rungame(self):
+        g = playgame.game()
+        return g.start()
+
+    def runboss(self):
+        boss = playboss.game()
+        return boss.start()
+
     def restart(self):
         pygame.init()
         pygame.display.set_caption('kerby')
         self.cursor.set_colorkey((0, 255, 0))
         while self.gameruning == False:
             target = pygame.mouse.get_pos()
-            self.screen = pygame.display.set_mode((1000, 400))
+            self.screen = pygame.display.set_mode((700, 500))
             self.screen.blit(image[3], (0, 0))
             self.screen.blit(st_op_buttons[2], st_op_rect[2])
             self.screen.blit(st_op_buttons[3], st_op_rect[3])
@@ -78,7 +87,7 @@ class StartMenu():
         self.cursor.set_colorkey((0, 255, 0))
         while self.gameruning == False:
             target = pygame.mouse.get_pos()
-            self.screen = pygame.display.set_mode((1000, 400))
+            self.screen = pygame.display.set_mode((700, 500))
             self.screen.blit(image[5], (0, 0))
             self.screen.blit(image[4], (0, 0))
             self.screen.blit(st_op_buttons[2], st_op_rect[2])
@@ -97,15 +106,12 @@ class StartMenu():
                 pygame.quit()
             if st_op_rect[0].collidepoint(pygame.mouse.get_pos()): ##start에 마우스가 올려져 있을 때
                 if event.type == MOUSEBUTTONDOWN:
-                    g = playgame.game()
+                    #g = playgame.game()
                     #g.start()
-                    if g.start():
+                    if self.rungame():
                         self.gameruning = False
                         print("CLEAR")
-                        g.game_state = True
-                        boss=playboss.game()
-                        boss.start()
-                        if boss.start():
+                        if self.runboss():
                             self.clear()
                             print("CLEAR")
                         else:
@@ -119,14 +125,18 @@ class StartMenu():
                     self.menu_state="option"
             if st_op_rect[2].collidepoint(pygame.mouse.get_pos()):
                 if event.type == MOUSEBUTTONDOWN:
-                    g = playgame.game()
-                    g.start()
-                    if g.start():
+                    if self.rungame():
+                        self.gameruning = False
                         print("CLEAR")
-                        
+                        if self.runboss():
+                            self.clear()
+                            print("CLEAR")
+                        else:
+                            self.restart()
                     else:
                         self.gameruning = False
                         print("GAME OVER")
+                        self.restart()
             if st_op_rect[3].collidepoint(pygame.mouse.get_pos()):
                 if event.type == MOUSEBUTTONDOWN:
                     pygame.quit()
