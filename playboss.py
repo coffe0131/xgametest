@@ -1,7 +1,6 @@
 import pygame
 import player, map, enemy,attack,items,startmenu,random
 import boss
-from time import sleep
 import music
 padWidth = 1000
 padHeight = 500
@@ -13,7 +12,7 @@ class game:
         self.gamePad = pygame.display.set_mode((padWidth,padHeight))
         pygame.display.set_caption('Kirby')
         #curby = pygame.image.load("images/fighter.png").convert_alpha()
-        self.font = pygame.font.Font("font/Maplestory Bold.ttf", 50)
+        self.font = pygame.font.Font("font/KirbyL.ttf", 50)
         self.clock = pygame.time.Clock()
         self.user = player.kirby()
         self.ground = map.BACKGROUND()
@@ -30,27 +29,20 @@ class game:
         self.bossM = boss.BOSS()
         self.bossheart = 3
         self.bullets = pygame.sprite.Group()
-        
+        self.sound2 = music.MUSIC()
     
 
     def start(self):
+        self.sound2.mplay(1)
         self.f_s_acctack.attack_type(type=1) #fire스킬**로 설정해줌
         self.user.eat_item = 'f' #이미지 받아올때 이미지 이름이 f이다.
         self.item_eat +=1  #
         self.levelupcount = 10
-        times = 500
-        i = 0
-        while i in range(100):
-            bosstext = self.font.render("BOSS STAGE",1,(50,50,50))
-            print(bosstext)
-            bosstext2 = self.font.render("YOU HAVE TO HEAT BOSS 3 TIMES",1,(50,50,50))
-            print(bosstext)
-            self.gamePad.blit(bosstext,(50,50))
-            self.gamePad.blit(bosstext2,(750,0))
-            i+=1
+        time = 500
 
         while self.game_state:
-            if(times <= 0):
+
+            if(time <= 0):
                 return 0
                 print("TIME OUT")
             if(self.user.heart < 1):
@@ -72,21 +64,15 @@ class game:
             self.user.hit(self.bullets)
             self.bullets.update()
 
-            timeout = self.font.render("Time : %d"%(times),1,(50,50,50))
+            timeout = self.font.render("Time : %d"%(time),1,(50,50,50))
+            text = self.font.render("Score : %d"%(self.score),1,(50,50,50))
             text2 = self.font.render("Heart : %d"%(self.user.heart),1,(50,50,50))
-            times = times -1
+            time = time -1
             self.gamePad.blit(text2,(0,0))
             self.gamePad.blit(timeout,(750,0))
             self.bossM.update()    
             self.bossM.draw(self.gamePad)
             self.bullets.draw(self.gamePad)
-
-            """if self.user.collision(self.bossM.bullets):  #커비랑 몬스터랑 충돌했을때 돌아감.
-                ##불렛으로 고쳐야함
-                self.bossM.bullets.pos_x -= padWidth  
-                self.user.heart -=1
-                print("heart is ",self.user.heart)"""
-
             if self.itemuse == 1:
                 if self.f_s_acctack.collision(self.bossM.hitbox):  #불꽃이랑 몬스터랑 충돌했을때 돌아감.
                     self.bossheart -=1
@@ -125,13 +111,14 @@ class game:
                     self.user.right = False
                 elif event.key == pygame.K_LEFT:
                     self.user.left = False
-            if not (self.user.isJump):
-                if key_event[pygame.K_SPACE]:
-                    self.user.isJump = True
-                    self.user.walkCount = 0
+            if not (self.user.isJump) and key_event[pygame.K_SPACE]:
+                self.user.isJump = True
+                self.user.walkCount = 0
+                pygame.mixer.Sound.play(self.sound2.jump)
                     
             if key_event[pygame.K_a]: #key a를 누르면 불꽃 나감
                         # self.attacks.append(attack.Attack(self.user.pos_x + 40, self.user.pos_y + 20))
                 self.f_s_acctack.x=self.user.pos_x + 37
                 self.f_s_acctack.y=self.user.pos_y + 30
                 self.attacks.append(self.f_s_acctack)
+                pygame.mixer.Sound.play(self.sound2.fire)
