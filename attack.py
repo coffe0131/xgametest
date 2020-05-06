@@ -18,7 +18,6 @@ class Attack:
 
     # item에서 불,스파크 아이템 먹으면 해당 스킬 사용 지정
     def attack_type(self, type):
-        print(type)
         if type == 1:
             self.image_type=fire_attack
 
